@@ -1,11 +1,20 @@
-puts File.basename("movies.txt")
+file = File.basename("movies.txt")
+
+check = File.exists?('movies.txt')
+if check == false
+	puts "Sorry, file #{file} not found."
+	abort
+end
+
+puts file
 
 File.foreach('movies.txt') do |line|
-  if line.include?('Max')
+
     a = line.split('|')
     b = (((a[7].to_f - 8).round(2))*10).to_i
+
       if a[1].include?('Max')
         puts "#{a[1]} #{"*" * b} #{}"
       end
-  end
 end
+
