@@ -1,22 +1,15 @@
-file = ARGV[0]
+ARGV[0] ||= 'movies.txt'
 
-unless ARGV[0]
-	file = 'movies.txt'	
+unless File.exists?(ARGV[0])
+  abort "Sorry, file #{ARGV[0]} not found."
 end
 
-unless (File.exists?(file))
-	puts "Sorry, file #{file} not found."
-	abort
-end
-
-puts file
+puts ARGV[0]
 
 File.foreach('movies.txt') do |line|
 
-    a = line.split('|')
-    b = (((a[7].to_f - 8).round(2))*10).to_i
+  a = line.split('|')
+  b = (((a[7].to_f - 8).round(2))*10).to_i
 
-      if a[1].include?('Max')
-        puts "#{a[1]} #{"*" * b} #{}"
-      end
+  puts "#{a[1]} #{"*" * b} #{}" if a[1].include?('Max')
 end
