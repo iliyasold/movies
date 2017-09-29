@@ -1,7 +1,10 @@
-file = File.basename("movies.txt")
+file = ARGV[0]
 
-check = File.exists?('movies.txt')
-if check == false
+unless ARGV[0]
+	file = 'movies.txt'	
+end
+
+unless (File.exists?(file))
 	puts "Sorry, file #{file} not found."
 	abort
 end
@@ -17,4 +20,3 @@ File.foreach('movies.txt') do |line|
         puts "#{a[1]} #{"*" * b} #{}"
       end
 end
-
