@@ -8,20 +8,19 @@ end
 
 puts file
 
+directors = []
+timing = []
+countries = []
+
 File.foreach(file) do |line|
+
   a = line.split('|')
   b = (((a[7].to_f - 8).round(2))*10).to_i
   puts "#{a[1]} #{"*" * b} #{}" if a[1].include?('Max')
-end
 
-#lesson_3
+# lesson_3
 
-directors = []
-
-File.foreach(file) do |line|
-	
-  a = line.split('|')
-
+# Сохранение в хэш
   movieslib = { 
   	link: a[0], 
   	title: a[1], 
@@ -35,14 +34,26 @@ File.foreach(file) do |line|
   	actors: a[9] 
   }
 
-  directors << movieslib[:director]
-
+  directors << movieslib[:director] 
+  timing << movieslib[:timing]
+  countries << movieslib[:country]
 end
-  
-  array = []
 
-  directors.each do |item|
-    array <<  item.split.reverse.join(' ').to_s
-  end
-
+# Удаление дублей и сортировка режиссёров по фамилии в алфавитном порядке 
+  array = [] 
+  directors.each { |item| array << item.split.reverse.join(' ') } 
   puts array.sort.uniq
+
+  # Количество фильмов, снятых не в США
+  puts (countries.delete_if {|x| x == "USA" }).size
+
+  
+
+  # # Поиск пяти самых длинных фильмов
+#   array2 = []
+#   timing.each { |item| array2 << item[0..-5] }
+
+#   array3 = []
+#   array2.each { |item| array3 << item.to_i }	
+#   puts array3.sort[-5..-1]
+
