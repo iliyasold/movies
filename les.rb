@@ -42,20 +42,21 @@ File.foreach(file) do |line|
   end
  
   # 5 самых длинных хронометражей
- 
-  movies.max_by(5) { |movie| movie[:timing].delete(" min").to_i }.each do |movie|
+    movies.max_by(5) { |movie| movie[:timing].delete(" min").to_i }.each do |movie|
     puts "#{movie[:title]} - #{movie[:timing]}"
   end
 
   # 10 комедий вышедших раньше остальных
-
+    movies.select { |movie|  movie[:genre].include?("Comedy")  }.min_by(10) { |movie| movie[:date] }.each do |movie|
+      puts "#{movie[:title]} - #{movie[:date]} - #{movie[:genre]}"
+    end
 
   # Удаление дублей и сортировка режиссёров по фамилии в алфавитном порядке 
-	array = [] 
-	directors.each { |director| array << director.split.reverse.join(' ') } 
-	puts array.sort.uniq
+	  array = [] 
+	  directors.each { |director| array << director.split.reverse.join(' ') } 
+	  puts array.sort.uniq
 
-  # Количество фильмов снятых не в США
+  # Количество фильмов снятых не в f
     def print_block
   	  without_US = yield
   	  puts "#{without_US} films are not made in the USA"
