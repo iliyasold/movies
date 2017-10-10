@@ -8,12 +8,10 @@ file = ARGV[0] || 'movies.txt'
 
     puts file
 
-    directors = [] 
-    timing = []
     movieslib = {}
+    directors = [] 
     countries = []
-    # fivelongest
-    tenfirst_arr = []
+    movies = []
 
 File.foreach(file) do |line|
 
@@ -37,43 +35,30 @@ File.foreach(file) do |line|
   	actors: a[9] 
   }
 
-    directors << movieslib[:director] 
-    timing << movieslib[:timing]
-    countries << movieslib[:country]
-    
-    fivelongest = {
-    	title: a[1], 
-    	timing: a[6]
-    }
-    
-    tenfirst = {
-    	title: a[1], 
-    	genre: a[5], 
-    	date: a[4]
-    }
+    movies << movieslib
 
-    tenfirst_arr << tenfirst.each { |item| }
-end
-  
-  # 5 самых длинных фильмов 
-  # :title & :timing
+    directors << movieslib[:director] 
+    countries << movieslib[:country]
+  end
+ 
+  # 5 самых длинных хронометражей
+ 
+  movies.max_by(5) { |movie| movie[:timing].delete(" min").to_i }.each do |movie|
+    puts "#{movie[:title]} - #{movie[:timing]}"
+  end
 
   # 10 комедий вышедших раньше остальных
-    tenfirst_arr.each do |item|
-      if item[:genre].include?("Comedy") # и первые 10 самых ранних дат
-      	 puts "#{item[:title]} - #{item[:genre]} - #{item[:date]}"
-      end
-    end
+
 
   # Удаление дублей и сортировка режиссёров по фамилии в алфавитном порядке 
 	array = [] 
-	directors.each { |item| array << item.split.reverse.join(' ') } 
+	directors.each { |director| array << director.split.reverse.join(' ') } 
 	puts array.sort.uniq
 
   # Количество фильмов снятых не в США
-  def print_block
-  	without_US = yield
-  	puts "#{without_US} films are not made in the USA"
-  end
+    def print_block
+  	  without_US = yield
+  	  puts "#{without_US} films are not made in the USA"
+    end
 
-  	print_block { (countries.delete_if {|x| x == "USA" }).size }
+  	print_block { (countries.delete_if {|country| country == "USA" }).size }
