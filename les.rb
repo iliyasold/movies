@@ -9,7 +9,6 @@ file = ARGV[0] || 'movies.txt'
     puts file
 
     movieslib = {}
-    directors = [] 
     countries = []
     movies = []
 
@@ -37,7 +36,6 @@ File.foreach(file) do |line|
 
     movies << movieslib
 
-    directors << movieslib[:director] 
     countries << movieslib[:country]
   end
  
@@ -53,7 +51,7 @@ File.foreach(file) do |line|
 
   # Удаление дублей и сортировка режиссёров по фамилии в алфавитном порядке 
 	  array = [] 
-	  directors.each { |director| array << director.split.reverse.join(' ') } 
+	  movies.each { |director| array << director[:director].split.reverse.join(' ') } 
 	  puts array.sort.uniq
 
   # Количество фильмов снятых не в f
