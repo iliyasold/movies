@@ -1,63 +1,15 @@
-# lesson_2
+MOVIES_KEYS = %i[link title year country date genre timing raiting director actor]
 
-file = ARGV[0] || 'movies.txt'
+movies = File.foreach("movies.txt").map do |line| 
+  MOVIES_KEYS.zip(line.split('|')).to_h
+end
 
-  unless File.exists?(file)
-    abort "Sorry, file #{file} not found."
-  end
+# 5 самых длинных хронометражей
+movies.max_by(5) { |movie| movie[:timing].delete(" min").to_i }.each do |movie|
+  puts "#{movie[:title]} - #{movie[:timing]}"
+end
 
-    puts file
-
-    movieslib = {}
-    countries = []
-    movies = []
-
-File.foreach(file) do |line|
-
-    a = line.split('|')
-    b = (((a[7].to_f - 8).round(2))*10).to_i
-    puts "#{a[1]} #{"*" * b} #{}" if a[1].include?('Max')
-
-  # lesson_3
-
-  # Сохранение в хэш
-  movieslib = { 
-  	link: a[0], 
-  	title: a[1], 
-  	year: a[2], 
-  	country: a[3], 
-  	date: a[4], 
-  	genre: a[5], 
-  	timing: a[6], 
-  	raiting: a[7], 
-  	director: a[8], 
-  	actors: a[9] 
-  }
-
-    movies << movieslib
-
-    countries << movieslib[:country]
-  end
- 
-  # 5 самых длинных хронометражей
-    movies.max_by(5) { |movie| movie[:timing].delete(" min").to_i }.each do |movie|
-    puts "#{movie[:title]} - #{movie[:timing]}"
-  end
-
-  # 10 комедий вышедших раньше остальных
-    movies.select { |movie|  movie[:genre].include?("Comedy")  }.min_by(10) { |movie| movie[:date] }.each do |movie|
-      puts "#{movie[:title]} - #{movie[:date]} - #{movie[:genre]}"
-    end
-
-  # Удаление дублей и сортировка режиссёров по фамилии в алфавитном порядке 
-	  array = [] 
-	  movies.each { |director| array << director[:director].split.reverse.join(' ') } 
-	  puts array.sort.uniq
-
-  # Количество фильмов снятых не в f
-    def print_block
-  	  without_US = yield
-  	  puts "#{without_US} films are not made in the USA"
-    end
-
-  	print_block { (countries.delete_if {|country| country == "USA" }).size }
+# 10 комедий вышедших раньше остальных
+movies.select { |movie|  movie[:genre].include?("Comedy")  }.min_by(10) { |movie| movie[:date] }.each do |movie|
+  puts "#{movie[:title]} - #{movie[:date]} - #{movie[:genre]}"
+end
