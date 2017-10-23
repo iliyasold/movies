@@ -1,6 +1,7 @@
 
 require 'csv'
 require 'ostruct'
+require 'date'
 
 MOVIES_KEYS = %i[link title year country date genre timing raiting director actor]
 
@@ -24,3 +25,69 @@ puts movies.map { |director| director.director }.uniq.sort_by{ |family| family.s
 
 # Количество фильмов снятых не в США
 puts "#{movies.count {|movie| movie.country.include?("USA") == false }} films are not made in the USA"
+
+#Статистика: сколько и в каком месяце фильмов снято
+num = 1
+mounths = [
+	nil,
+	"январе", 
+	"феврале", 
+	"марте", 
+	"апреле", 
+	"мае", 
+	"июне", 
+	"июле", 
+	"августе", 
+	"сентябре", 
+	"октябре", 
+	"ноябре", 
+	"декабре"  
+]  
+
+puts "Сколько и в каком месяце снято фильмов:"
+
+while num <= 12 do
+  puts "#{movies.count { |movie| movie.date.include?('-01-') == true }} в #{mounths[num]}"
+  num += 1
+end
+
+#Сколько и в каком месяце фильмов снято (с помощью библиотеки date)
+num = 1
+mounths = [
+	nil,
+	"январе", 
+	"феврале", 
+	"марте", 
+	"апреле", 
+	"мае", 
+	"июне", 
+	"июле", 
+	"августе", 
+	"сентябре", 
+	"октябре", 
+	"ноябре", 
+	"декабре"  
+]  
+
+puts "Сколько и в каком месяце снято фильмов:"
+
+while num <= 12 do
+  puts "#{movies.map { |movie| Date._strptime(movie[:date]) }.delete_if { |x| x == nil }.map { |item| item[:mon] }.count(num)} снято в #{mounths[num]}"
+  num += 1
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
