@@ -46,8 +46,14 @@ mounths = [
 
 puts "Сколько и в каком месяце снято фильмов:"
 
+while num <= 9 do
+  puts "#{movies.count { |movie| movie.date.include?("-0#{num}-") == true }} в #{mounths[num]}"
+  num += 1
+end
+
+num = 10
 while num <= 12 do
-  puts "#{movies.count { |movie| movie.date.include?('-01-') == true }} в #{mounths[num]}"
+  puts "#{movies.count { |movie| movie.date.include?("-#{num}-") == true }} в #{mounths[num]}"
   num += 1
 end
 
@@ -75,19 +81,3 @@ while num <= 12 do
   puts "#{movies.map { |movie| Date._strptime(movie[:date]) }.delete_if { |x| x == nil }.map { |item| item[:mon] }.count(num)} снято в #{mounths[num]}"
   num += 1
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
