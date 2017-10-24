@@ -21,48 +21,32 @@ movies.select { |movie| movie.genre.include?("Comedy")  }.min_by(10) { |movie| m
 end
 
 # Удаление дублей и сортировка режиссёров по фамилии в алфавитном порядке не меняя их местами
-puts movies.map { |director| director.director }.uniq.sort_by{ |family| family.split(" ").last }
+puts movies.map { |director| director.director }.uniq.sort_by { |family| family.split(" ").last }
 
 # Количество фильмов снятых не в США
 puts "#{movies.count {|movie| movie.country.include?("USA") == false }} films are not made in the USA"
 
 #Статистика: сколько и в каком месяце фильмов снято
-num = 1
-mounths = [
-	nil,
-	"январе", 
-	"феврале", 
-	"марте", 
-	"апреле", 
-	"мае", 
-	"июне", 
-	"июле", 
-	"августе", 
-	"сентябре", 
-	"октябре", 
-	"ноябре", 
-	"декабре"  
-]  
-
 puts "Сколько и в каком месяце снято фильмов:"
+mounths_name =  [ nil, "январе", "феврале", "марте", "апреле", "мае", "июне", "июле", "августе", "сентябре", "октябре", "ноябре", "декабре" ] 
 
-while num <= 9 do
-  puts "#{movies.count { |movie| movie.date.include?("-0#{num}-") == true }} в #{mounths[num]}"
-  num += 1
-end
+mounths = movies.map { |movie| Date._strptime(movie[:date]) }.delete_if { |x| x == nil }.map { |item| item[:mon] }
+puts mounths.sort.uniq.map { |elem| "#{mounths.count(elem)} снято в #{mounths_name[elem]} " }
 
-num = 10
-while num <= 12 do
-  puts "#{movies.count { |movie| movie.date.include?("-#{num}-") == true }} в #{mounths[num]}"
-  num += 1
-end
 
-#Сколько и в каком месяце фильмов снято (с помощью библиотеки date)
-num = 1 
 
-puts "Сколько и в каком месяце снято фильмов:"
 
-while num <= 12 do
-  puts "#{movies.map { |movie| Date._strptime(movie[:date]) }.delete_if { |x| x == nil }.map { |item| item[:mon] }.count(num)} снято в #{mounths[num]}"
-  num += 1
-end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
