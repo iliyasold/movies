@@ -21,32 +21,14 @@ movies.select { |movie| movie.genre.include?("Comedy")  }.min_by(10) { |movie| m
 end
 
 # Удаление дублей и сортировка режиссёров по фамилии в алфавитном порядке не меняя их местами
-puts movies.map { |director| director.director }.uniq.sort_by { |family| family.split(" ").last }
+puts movies.map(&:director).uniq.sort_by { |family| family.split(" ").last }
 
 # Количество фильмов снятых не в США
-puts "#{movies.count {|movie| movie.country.include?("USA") == false }} films are not made in the USA"
+puts "#{movies.count {|movie| !movie.country.include?("USA") }} films are not made in the USA"
 
 #Статистика: сколько и в каком месяце фильмов снято
 puts "Сколько и в каком месяце снято фильмов:"
-mounths_name =  [ nil, "январе", "феврале", "марте", "апреле", "мае", "июне", "июле", "августе", "сентябре", "октябре", "ноябре", "декабре" ] 
+mounths_name =  [ nil, "в январе", "в феврале", "в марте", "в апреле", "в мае", "в июне", "в июле", "в августе", "в сентябре", "в октябре", "в ноябре", "в декабре" ] 
 
-mounths = movies.map { |movie| Date._strptime(movie[:date]) }.delete_if { |x| x == nil }.map { |item| item[:mon] }
-puts mounths.sort.uniq.map { |elem| "#{mounths.count(elem)} снято в #{mounths_name[elem]} " }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+mounths = movies.map { |movie| Date._strptime(movie[:date]) }.compact.map { |item| item[:mon] }
+puts mounths.uniq.sort.map { |mounth| [mounths_name[mounth], mounths.count(mounth)] }
