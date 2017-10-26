@@ -28,7 +28,9 @@ puts "#{movies.count {|movie| !movie.country.include?("USA") }} films are not ma
 
 #Статистика: сколько и в каком месяце фильмов снято
 puts "Сколько и в каком месяце снято фильмов:"
-mounths_name =  [ nil, "в январе", "в феврале", "в марте", "в апреле", "в мае", "в июне", "в июле", "в августе", "в сентябре", "в октябре", "в ноябре", "в декабре" ] 
+MOUNTHS_KEYS = [nil, "в январе", "в феврале", "в марте", "в апреле", "в мае", "в июне", "в июле", "в августе", "в сентябре", "в октябре", "в ноябре", "в декабре"] 
 
-mounths = movies.map { |movie| Date._strptime(movie[:date]) }.compact.map { |item| item[:mon] }
-puts mounths.uniq.sort.map { |mounth| [mounths_name[mounth], mounths.count(mounth)] }
+hash = {}
+hash.default = 0
+mounths = movies.map { |movie| Date._strptime(movie[:date]) }.compact.map { |item| item[:mon] }.sort.map { |elem| hash[MOUNTHS_KEYS[elem]] += 1 }
+puts hash
